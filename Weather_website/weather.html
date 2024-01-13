@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #160202;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        #weather-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div id="weather-container">
+    <h2 id="city">Enter city</h2>
+    <p id="temperature">Temperature:</p>
+    <p id="humidity">Humidity:</p>
+    <p id="pressure">Pressure:</p>
+    <p id="report">Weather Report:</p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cityElement = document.getElementById('city');
+        cityElement.innerText = prompt("Enter city");
+        const apiKey = '525025178c86f08e3b4a75c4365a68d4'; // Your API key here
+        const base_url = 'https://api.openweathermap.org/data/2.5/weather';
+        const city = cityElement.innerText;
+        const url = `${base_url}?q=${city}&appid=${apiKey}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const main = data.main;
+                const temperature = main.temp;
+                const humidity = main.humidity;
+                const pressure = main.pressure;
+                const report = data.weather[0].description;
+
+                document.getElementById('temperature').innerText = `Temperature: ${temperature}`;
+                document.getElementById('humidity').innerText = `Humidity: ${humidity}`;
+                document.getElementById('pressure').innerText = `Pressure: ${pressure}`;
+                document.getElementById('report').innerText = `Weather Report: ${report}`;
+            })
+            .catch(error => {
+                console.error('Error in HTTP request', error);
+                alert('Error in HTTP request');
+            });
+    });
+</script>
+
+</body>
+</html>
